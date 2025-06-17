@@ -1,23 +1,24 @@
 import React from 'react';
 import './Reservar.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ComboCanchas from './comboCanchas';
 
-function ReservarCancha() {
 
+
+function ReservarCancha() {
+  const navigate = useNavigate();
   React.useEffect(() => {
     try {
       const user = JSON.parse(localStorage.getItem('user'));
       if (!user) {
-        alert('Por favor, inicia sesión para reservar una cancha.');
-        window.location.href = '/login';
+        navigate('/login', { state: { msg: 'Por favor, inicia sesión para reservar una cancha.' } });
       }
     } catch (error) {
       console.error('Error al verificar el usuario:', error);
       alert('Error al verificar la sesión. Por favor, inicia sesión nuevamente.');
-      window.location.href = '/login';
+      navigate('/login');
     }
-  }, []);
+  }, [navigate]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -25,15 +26,15 @@ function ReservarCancha() {
       const formData = new FormData(event.target);
       const reservationData = Object.fromEntries(formData.entries());
 
-      // Obtén el usuario logueado
       const user = JSON.parse(localStorage.getItem('user'));
-      if (!user) {
+      if (!user || !user._id) {
         alert('Por favor, inicia sesión para reservar una cancha.');
-        window.location.href = '/login';
+        navigate('/login');
         return;
       }
-
       reservationData.usuarioId = user._id;
+
+      console.log('Datos de reserva:', reservationData);
 
       fetch('http://localhost:5000/api/reservas', {
         method: 'POST',
@@ -49,7 +50,7 @@ function ReservarCancha() {
           return response.json();
         })
         .then(data => {
-          alert(`Reserva realizada con éxito: ${data.fecha} a las ${data.horaInicio} - ${data.horaFin}`);
+          alert(`Reserva realizada con éxito: ${data.fecha} \nA las ${data.horaInicio} - ${data.horaFin}`);
           console.log('Reserva exitosa:', data);
           event.target.reset();
         })

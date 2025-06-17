@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import './ComboCanchas.css'; 
-function ComboCanchas() {
+import './ComboCanchas.css';
+
+function ComboCanchas(props) {
   const [canchas, setCanchas] = useState([]);
   const [canchaSeleccionada, setCanchaSeleccionada] = useState('');
 
@@ -13,12 +14,14 @@ function ComboCanchas() {
   return (
     <select
       className="form-select"
+      name={props.name || "canchaId"}
       value={canchaSeleccionada}
       onChange={e => setCanchaSeleccionada(e.target.value)}
+      required
     >
       <option value="">Seleccione una cancha</option>
       {canchas.map(cancha => (
-        <option key={cancha._id} value={cancha.nombre}>
+        <option key={cancha._id} value={cancha._id}>
           {cancha.nombre}
         </option>
       ))}

@@ -7,6 +7,7 @@ import Login from './components/Login'
 import ReservarCancha from './components/Reservar';
 import Contacto from './components/Contacto';
 import Register from './components/Register';
+import Admin from './components/Admin';
 
 
 createRoot(document.getElementById('root')).render(
@@ -18,6 +19,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/reservar" element={<ReservarCancha />} />
         <Route path="/contacto" element={<Contacto />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/admin" element={<Admin />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
